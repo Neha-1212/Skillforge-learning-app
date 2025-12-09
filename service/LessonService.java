@@ -1,17 +1,37 @@
 package com.example.jwt.service;
-import java.util.List;
-import java.util.Optional;
 
 import com.example.jwt.dto.LessonRequestDTO;
 import com.example.jwt.dto.LessonResponseDTO;
-import com.example.jwt.entities.Lesson;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface LessonService {
-    LessonResponseDTO createLesson( LessonRequestDTO dto);
-    Lesson updateLesson(Long id, Lesson lesson);
-    void deleteLesson(Long id);
-    Optional<Lesson> getLessonById(Long id);
-    List<Lesson> getAllLessons();
-	//LessonResponseDTO createLesson(LessonRequestDTO dto);
 
+    // CREATE LESSON
+    LessonResponseDTO createLesson(
+            LessonRequestDTO dto,
+            MultipartFile video,
+            MultipartFile pdf
+    ) throws Exception;
+
+    // UPDATE LESSON
+    LessonResponseDTO updateLesson(
+            Long id,
+            LessonRequestDTO dto,
+            MultipartFile video,
+            MultipartFile pdf
+    ) throws Exception;
+
+    // DELETE LESSON
+    void deleteLesson(Long id);
+
+    // GET BY ID
+    LessonResponseDTO getById(Long id);
+
+    // GET ALL LESSONS
+    List<LessonResponseDTO> getAllLessons();
+
+    // GET LESSONS BY MODULE
+    List<LessonResponseDTO> getLessonsByModule(Long moduleId);
 }

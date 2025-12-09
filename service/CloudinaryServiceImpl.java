@@ -1,13 +1,12 @@
 package com.example.jwt.service;
 
-
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.example.jwt.service.CloudinaryService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import jakarta.annotation.PostConstruct;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -38,14 +37,17 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     public Map uploadFile(MultipartFile file, String folder) throws IOException {
         Map params = ObjectUtils.asMap(
                 "folder", folder,
-                "resource_type", "auto" // auto detects image/video/pdf
+                "resource_type", "auto" // Automatically detect type: image/video/pdf
         );
         return cloudinary.uploader().upload(file.getBytes(), params);
     }
 
     @Override
     public Map uploadFileBase64(String base64Data, String folder) throws Exception {
-        Map params = ObjectUtils.asMap("folder", folder, "resource_type", "auto");
+        Map params = ObjectUtils.asMap(
+                "folder", folder,
+                "resource_type", "auto"
+        );
         return cloudinary.uploader().upload(base64Data, params);
     }
 

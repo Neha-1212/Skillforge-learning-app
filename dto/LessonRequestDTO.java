@@ -1,68 +1,33 @@
 package com.example.jwt.dto;
+
 import java.util.List;
 
 public class LessonRequestDTO {
 
     private String title;
-    private String videoUrl;
-    private String pdfUrl;
-    private String externalLink;
+    private String description;
     private String difficulty;
-    private List<String> tags;
+    private String externalLink;
+   
     private Long moduleId;
 
     public LessonRequestDTO() {}
 
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    // Getters and Setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getPdfUrl() {
-        return pdfUrl;
-    }
-    public void setPdfUrl(String pdfUrl) {
-        this.pdfUrl = pdfUrl;
-    }
+    public String getDifficulty() { return difficulty; }
+    public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
 
-    public String getExternalLink() {
-        return externalLink;
-    }
-    public void setExternalLink(String externalLink) {
-        this.externalLink = externalLink;
-    }
+    public String getExternalLink() { return externalLink; }
+    public void setExternalLink(String externalLink) { this.externalLink = externalLink; }
 
-    public String getDifficulty() {
-        return difficulty;
-    }
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
-    }
+   
 
-    public List<String> getTags() {
-        return tags;
-    }
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public Long getModuleId() {
-        return moduleId;
-    }
-    public void setModuleId(Long moduleId) {
-        this.moduleId = moduleId;
-    }
-
-	
-	
-
+    public Long getModuleId() { return moduleId; }
+    public void setModuleId(Long moduleId) { this.moduleId = moduleId; }
 }

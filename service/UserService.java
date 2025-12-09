@@ -36,11 +36,12 @@ public class UserService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .roles(user.getRole().name())
+               .roles(user.getRole().name())
+              //.authorities("ROLE_" + savedUser.getRole().name())  // <-- yahan add karo
                 .build();
     }
 
-    public JwtResponse register(RegisterRequest request) {
+   /* public JwtResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already registered");
         }
@@ -60,36 +61,55 @@ public class UserService implements UserDetailsService {
 
         System.out.println("object is created");
         userRepository.save(user); 
-        
-      /*  if (request.getRole() != null) {
-            try {
-                user.setRole(Role.valueOf(request.getRole().toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                user.setRole(Role.STUDENT); // fallback if invalid role
-            }
+    
+    }*/
+    public JwtResponse register(RegisterRequest request) {
+
+        // Check if email already exists
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already registered");
+        }
+
+        System.out.println("Registration started");
+
+        // Create user object
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        // Set role (default STUDENT)
+        if (request.getRole() != null) {
+            user.setRole(request.getRole());
         } else {
             user.setRole(Role.STUDENT);
         }
-       */
-        
-        
-        
-   
-        
-        
-        
-        
-        // ✅ Use the role safely after it's set
+
+        // Save user
+        User savedUser = userRepository.save(user);
+
+        System.out.println("User saved successfully");
+
+        // Generate JWT token
         String token = jwtService.generateToken(
                 org.springframework.security.core.userdetails.User
-                        .withUsername(user.getEmail())
-                        .password(user.getPassword())
-                        .roles(user.getRole().name())
+                        .withUsername(savedUser.getEmail())
+                        .password(savedUser.getPassword())
+                      // .authorities(savedUser.getRole().name())
+                     // .authorities(user.getRole().name())
+                     .authorities("ROLE_" + savedUser.getRole().name())  // <-- yahan add karo
                         .build()
         );
 
-        return new JwtResponse(token, user.getRole().name(), user.getEmail());
+        // Return JwtResponse
+        return new JwtResponse(
+                token,
+                savedUser.getRole().name(),
+                savedUser.getEmail()
+        );
     }
+
+ 
 
     public JwtResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
@@ -103,11 +123,14 @@ public class UserService implements UserDetailsService {
                 org.springframework.security.core.userdetails.User
                         .withUsername(user.getEmail())
                         .password(user.getPassword())
-                        .roles(user.getRole().name())
+                        .authorities(user.getRole().name())
+                     //.authorities("ROLE_" + savedUser.getRole().name()) 
+                     .authorities("ROLE_" + user.getRole().name()) 
+                     // <-- yahan add karo
                         .build()
         );
 
 
-        return new JwtResponse(token, user.getRole().name(), user.getEmail());
+        return new JwtResponse(token,  user.getRole().name(), user.getEmail());
     }
 }

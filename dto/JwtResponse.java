@@ -2,7 +2,7 @@ package com.example.jwt.dto;
 
 public class JwtResponse {
     private String token;
-    private String name;
+    private String role;
     private String email;
 
     // Default constructor
@@ -10,9 +10,9 @@ public class JwtResponse {
     }
 
     // Parameterized constructor
-    public JwtResponse(String token, String name, String email) {
+    public JwtResponse(String token, String role, String email) {
         this.token = token;
-        this.name = name;
+        this.role = role;
         this.email = email;
     }
 
@@ -25,12 +25,12 @@ public class JwtResponse {
         this.token = token;
     }
 
-    public String getName() {
-        return name;
+    public String getRole() {
+        return role;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getEmail() {
